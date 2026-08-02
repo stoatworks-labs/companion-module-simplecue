@@ -1,0 +1,28 @@
+{
+  "$schema": "../node_modules/@companion-module/base/assets/manifest.schema.json",
+  "type": "connection",
+  "id": "simplecue",
+  "name": "simplecue",
+  "shortname": "SimpleCue",
+  "description": "Control SimpleCue over OSC — GO, fire/stop/standby/audition individual cues, stop all, panic, pause/resume, release vamps, step the standby marker and set the master level, with live feedback on what is standing by and what is sounding.",
+  "version": "1.0.0",
+  "license": "MIT",
+  "repository": "git+https://github.com/stoatworks-labs/companion-module-simplecue.git",
+  "bugs": "https://github.com/stoatworks-labs/companion-module-simplecue/issues",
+  "maintainers": [
+    {
+      "name": "Allan Sargeant",
+      "email": ""
+    }
+  ],
+  "runtime": {
+    "type": "node22",
+    "api": "nodejs-ipc",
+    "apiVersion": "0.0.0",
+    "entrypoint": "../src/main.js"
+  },
+  "legacyIds": [],
+  "manufacturer": "Stoatworks Labs",
+  "products": ["SimpleCue"],
+  "keywords": ["audio", "playback", "theatre", "cue-player", "show-control"]
+}
