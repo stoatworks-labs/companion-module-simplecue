@@ -1,3 +1,8 @@
+// Variable references in preset text use `self.label`, the CONNECTION's label,
+// not the module id. Companion resolves $(label:variable) against whatever the
+// operator named this connection — hardcoding the module id produces buttons
+// that render the raw $(...) text on any connection that has been renamed, and
+// on a second instance of the same module.
 // Presets are a starting layout, not a fixed one — an operator drags one onto a
 // button and then edits it. That shapes two choices here:
 //
@@ -58,7 +63,7 @@ export default function UpdatePresets(self) {
   // --- Transport ----------------------------------------------------------
   presets.go = preset({
     name: "GO — fire the standby step",
-    text: "GO\n$(simplecue:standby_number)",
+    text: `GO\n$(${self.label}:standby_number)`,
     size: "24",
     bgcolor: GREEN,
     actions: [{ actionId: "go", options: {} }],
@@ -66,7 +71,7 @@ export default function UpdatePresets(self) {
 
   presets.go_named = preset({
     name: "GO, with the standby cue's name",
-    text: "GO\n$(simplecue:standby_number)\n$(simplecue:standby_name)",
+    text: `GO\n$(${self.label}:standby_number)\n$(${self.label}:standby_name)`,
     size: "14",
     bgcolor: GREEN,
     actions: [{ actionId: "go", options: {} }],
@@ -141,7 +146,7 @@ export default function UpdatePresets(self) {
 
   presets.standby_display = preset({
     name: "Standby display (no action)",
-    text: "STANDBY\n$(simplecue:standby_number)\n$(simplecue:standby_name)",
+    text: `STANDBY\n$(${self.label}:standby_number)\n$(${self.label}:standby_name)`,
     size: "14",
     color: AMBER,
     bgcolor: BLACK,
@@ -239,7 +244,7 @@ export default function UpdatePresets(self) {
   // --- Master --------------------------------------------------------------
   presets.master_display = preset({
     name: "Master level display (no action)",
-    text: "MASTER\n$(simplecue:master_db) dB",
+    text: `MASTER\n$(${self.label}:master_db) dB`,
     size: "14",
     bgcolor: BLACK,
     feedbacks: [
@@ -288,7 +293,7 @@ export default function UpdatePresets(self) {
   // this is the one that says whether that value is still current.
   presets.status = preset({
     name: "Status feed is live (press to re-query)",
-    text: "SimpleCue\n$(simplecue:status)",
+    text: `SimpleCue\n$(${self.label}:status)`,
     size: "14",
     bgcolor: RED,
     actions: [{ actionId: "queryStatus", options: {} }],
@@ -303,7 +308,7 @@ export default function UpdatePresets(self) {
 
   presets.playing_count = preset({
     name: "Cues sounding (no action)",
-    text: "PLAYING\n$(simplecue:playing_count)",
+    text: `PLAYING\n$(${self.label}:playing_count)`,
     size: "14",
     bgcolor: BLACK,
     feedbacks: [
@@ -317,7 +322,7 @@ export default function UpdatePresets(self) {
 
   presets.last_error = preset({
     name: "Last error reported by SimpleCue (no action)",
-    text: "ERR\n$(simplecue:last_error)",
+    text: `ERR\n$(${self.label}:last_error)`,
     size: "14",
     bgcolor: BLACK,
     feedbacks: [
