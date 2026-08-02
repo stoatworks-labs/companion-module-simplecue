@@ -77,7 +77,7 @@ function handleMessage(self, oscMsg) {
   self.state.lastStatusAt = Date.now();
   self.updateStatus(InstanceStatus.Ok);
   self.refreshVariableValues();
-  self.checkFeedbacks();
+  self.checkAllFeedbacks();
 }
 
 const oscTransport = {
