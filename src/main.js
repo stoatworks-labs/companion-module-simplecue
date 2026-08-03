@@ -5,6 +5,7 @@ import UpdateFeedbacks from "./feedbacks.js";
 import UpdateVariableDefinitions from "./variables.js";
 import UpdatePresets from "./presets.js";
 import oscTransport from "./osc.js";
+import { aboutField } from './about-field.js'
 
 // How long without a status message before the module stops claiming SimpleCue
 // is there. SimpleCue publishes only on change, so silence is the NORMAL state
@@ -126,6 +127,10 @@ export default class ModuleInstance extends InstanceBase {
         max: 60,
         default: 2,
       },
+    
+    	// Vendored from stoatworks-backend/about. A Companion module has no
+    	// UI of its own, so this config panel is the only surface it has.
+    	aboutField(),
     ];
   }
 
