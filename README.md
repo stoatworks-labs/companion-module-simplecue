@@ -100,6 +100,10 @@ definition shapes, that every preset references an action and feedback that
 exist, that actions emit addresses SimpleCue's parser actually accepts, and that
 inbound `/status/…` drives the feedbacks. No Companion install needed.
 
+<!-- attributions:start -->
+This project is built on other people's work — see [ATTRIBUTIONS.md](ATTRIBUTIONS.md).
+<!-- attributions:end -->
+
 ## Licence
 
 MIT — see [LICENSE](LICENSE).
