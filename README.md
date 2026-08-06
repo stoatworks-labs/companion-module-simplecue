@@ -14,6 +14,21 @@ It talks directly to the app's own OSC listener (UDP, default port 53000) and
 receives status on a local port — no separate integration to install on the app
 side beyond turning OSC on and adding a target.
 
+<!-- downloads:start -->
+
+## Download
+
+**[v1.0.0](https://github.com/stoatworks-labs/companion-module-simplecue/releases/tag/v1.0.0)**
+
+This release contains:
+
+- [`companion-module-simplecue-pkg.tgz`](https://github.com/stoatworks-labs/companion-module-simplecue/releases/latest/download/companion-module-simplecue-pkg.tgz) — npm package, 49 KB
+- [`simplecue-1.0.0.tgz`](https://github.com/stoatworks-labs/companion-module-simplecue/releases/download/v1.0.0/simplecue-1.0.0.tgz) — npm package, 50 KB
+
+All builds, checksums and release notes: [github.com/stoatworks-labs/companion-module-simplecue/releases](https://github.com/stoatworks-labs/companion-module-simplecue/releases).
+
+<!-- downloads:end -->
+
 ## What it does
 
 - **Actions** — GO, stop everything, panic, pause/resume/toggle, release every
