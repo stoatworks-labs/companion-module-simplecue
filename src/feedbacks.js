@@ -43,10 +43,8 @@ export default function UpdateFeedbacks(self) {
         "Lights while SimpleCue's standby marker is on this cue — i.e. this is what GO will fire.",
       defaultStyle: { bgcolor: 0xcc7a00, color: 0xffffff },
       options: [cueOption],
-      callback: async (feedback, context) => {
-        const wanted = await context.parseVariablesInString(
-          String(feedback.options.cue ?? ""),
-        );
+      callback: (feedback) => {
+        const wanted = String(feedback.options.cue ?? "");
         return cueMatches(self.state.standbyNumber, wanted);
       },
     },
@@ -57,10 +55,8 @@ export default function UpdateFeedbacks(self) {
         "Lights while this cue is sounding. Several cues can be playing at once — SimpleCue reports them all.",
       defaultStyle: { bgcolor: 0x00aa00, color: 0xffffff },
       options: [cueOption],
-      callback: async (feedback, context) => {
-        const wanted = await context.parseVariablesInString(
-          String(feedback.options.cue ?? ""),
-        );
+      callback: (feedback) => {
+        const wanted = String(feedback.options.cue ?? "");
         return self.state.playingCues.some((n) => cueMatches(n, wanted));
       },
     },

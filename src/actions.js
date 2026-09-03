@@ -45,16 +45,16 @@ export default function UpdateActions(self) {
 
   /** Resolve a cue-number field, trimmed. An empty result is dropped rather
    *  than sent: "/cue//go" is not a valid address and SimpleCue would answer
-   *  with an error the operator did not cause. */
-  const cueNumber = async (event) => {
-    const raw = await self.parseVariablesInString(
-      String(event.options.cue ?? ""),
-    );
-    return raw.trim();
-  };
+   *  with an error the operator did not cause.
+   *
+   *  The option arrives already expanded: Companion resolves a `useVariables`
+   *  field before invoking the callback. `parseVariablesInString` does not
+   *  exist in base 2.x — on the context or on InstanceBase — and calling it
+   *  throws when the action fires, while the module still loads cleanly. */
+  const cueNumber = (event) => String(event.options.cue ?? "").trim();
 
   const withCue = (verb, buildArgs) => async (event) => {
-    const number = await cueNumber(event);
+    const number = cueNumber(event);
     if (!number) {
       self.log("warn", `Cue action "${verb}" skipped — no cue number given.`);
       return;
@@ -127,7 +127,7 @@ export default function UpdateActions(self) {
       name: "Standby: a specific cue",
       options: [cueNumberOption()],
       callback: async (event) => {
-        const number = await cueNumber(event);
+        const number = cueNumber(event);
         if (!number) {
           self.log("warn", "Standby action skipped — no cue number given.");
           return;
@@ -259,18 +259,12 @@ export default function UpdateActions(self) {
         },
       ],
       callback: async (event) => {
-        const address = (
-          await self.parseVariablesInString(String(event.options.address ?? ""))
-        ).trim();
+        const address = String(event.options.address ?? "").trim();
         if (!address.startsWith("/")) {
           self.log("warn", `Raw OSC skipped — "${address}" is not an address.`);
           return;
         }
-        const raw = (
-          await self.parseVariablesInString(
-            String(event.options.argument ?? ""),
-          )
-        ).trim();
+        const raw = String(event.options.argument ?? "").trim();
         const args = [];
         if (raw.length > 0) {
           const asNumber = Number(raw);
