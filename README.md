@@ -18,12 +18,12 @@ side beyond turning OSC on and adding a target.
 
 ## Download
 
-**[v1.0.2](https://github.com/stoatworks-labs/companion-module-simplecue/releases/tag/v1.0.2)**
+**[v1.0.3](https://github.com/stoatworks-labs/companion-module-simplecue/releases/tag/v1.0.3)**
 
 This release contains:
 
-- [`companion-module-simplecue-pkg.tgz`](https://github.com/stoatworks-labs/companion-module-simplecue/releases/latest/download/companion-module-simplecue-pkg.tgz) — npm package, 50 KB
-- [`simplecue-1.0.2.tgz`](https://github.com/stoatworks-labs/companion-module-simplecue/releases/download/v1.0.2/simplecue-1.0.2.tgz) — npm package, 50 KB
+- [`companion-module-simplecue-pkg.tgz`](https://github.com/stoatworks-labs/companion-module-simplecue/releases/latest/download/companion-module-simplecue-pkg.tgz) — npm package, 55 KB
+- [`simplecue-1.0.3.tgz`](https://github.com/stoatworks-labs/companion-module-simplecue/releases/download/v1.0.3/simplecue-1.0.3.tgz) — npm package, 55 KB
 
 All builds, checksums and release notes: [github.com/stoatworks-labs/companion-module-simplecue/releases](https://github.com/stoatworks-labs/companion-module-simplecue/releases).
 
