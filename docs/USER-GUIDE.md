@@ -1,16 +1,16 @@
 # Companion — SimpleCue user guide
 
-This module drives [SimpleCue](https://github.com/stoatworks-labs/simplecue) over OSC from a
-Stream Deck or any other Bitfocus Companion surface — GO, cue fire, transport, master level, with
-cue standby and playing colour.
+This module runs [SimpleCue](https://github.com/stoatworks-labs/simplecue) over OSC from a
+Stream Deck or any other Bitfocus Companion surface: GO, firing cues, transport and master level,
+with buttons that light up for the cue on standby and the cues that are playing.
 
-The [README](../README.md) covers installing the module. This is how to set it up so that the
-lights on it mean something.
+The [README](../README.md) covers installing the module. This guide is about setting it up so the
+lights on your surface mean something.
 
-> **Before you rely on this:** OSC is UDP and **nothing is acknowledged**. A command that vanishes
-> in the network looks exactly like one that worked, and when SimpleCue goes away it simply stops
-> sending — so every feedback holds its last known value indefinitely. The whole shape of this
-> guide follows from that.
+> **Before you rely on this:** OSC is UDP and **nothing is acknowledged**. A command that goes
+> missing on the network looks the same as one that worked, and when SimpleCue goes away it just
+> stops sending, so every feedback holds its last known value indefinitely. Pretty much everything
+> in this guide follows from that.
 >
 > This module was built with AI assistance, directed and reviewed by a human author.
 
@@ -25,40 +25,43 @@ In SimpleCue, open **Audio → Control setup**:
 2. **Add an OSC target** pointing at this Companion machine, on the port set in *Local status
    (feedback) port* (default **53001**).
 
-**SimpleCue sends no status at all until a target exists.** Skip step 2 and everything still
-appears to work — actions fire, cues play — while every feedback on the surface stays dark
-forever. That is the single most common way this ends up half-configured.
+**SimpleCue doesn't send any status at all until a target exists.** Skip step 2 and everything
+still looks fine (actions fire, cues play) while every feedback on the surface stays dark for
+ever. It's the most common way this ends up half set up.
 
 If Companion is on a different machine, **the target host must be Companion's IP**, not
 `127.0.0.1`.
 
 The Control setup panel has a live monitor of incoming OSC. **If a button seems to do nothing,
-look there first** — it answers the one question worth asking: is anything arriving at all?
+look there first.** It answers the only question worth asking at that point, which is whether
+anything's arriving at all.
 
 ---
 
 ## GO is not "fire cue N"
 
-**GO** performs whatever the standby marker is sitting on — the cue itself, or one of its sub-cues
-— and then advances. It is the space bar, and it is stateful.
+**GO** runs whatever the standby marker is sitting on (the cue itself, or one of its sub-cues)
+and then moves the marker on. It's the space bar, and like the space bar it depends on where you
+are.
 
-**Cue: fire** fires one named cue regardless of where the marker is.
+**Cue: fire** fires one named cue, wherever the marker happens to be.
 
-Those are different buttons for different jobs. A surface built out of GO alone follows the
-operator's position in the list; a surface built out of Cue: fire does not move the marker at all.
-Most shows want both, and want them visually distinct.
+They're different buttons for different jobs. A surface built from GO alone follows the
+operator's place in the list; one built from Cue: fire doesn't move the marker at all. Most shows
+want both, and want them to look different.
 
 ---
 
 ## Cue numbers are text
 
-Cue fields are **text, not dropdowns.** SimpleCue's cue numbers are free text — `12`, `12.5`,
-`PRE` — and it does not publish its cue list over OSC, so there is nothing to enumerate.
+Cue fields are **text, not dropdowns.** SimpleCue's cue numbers are free text (`12`, `12.5`,
+`PRE`) and it doesn't publish its cue list over OSC, so there's nothing to fill a list with.
 
-They accept Companion variables, so a cue number can be built at press time.
+They take Companion variables, so a button can work out its cue number at the moment it's
+pressed.
 
-**Numbers match loosely**: `12.50` finds `12.5`. That is deliberate, and it means a trailing zero
-typed under pressure does not lose a cue.
+**Numbers match loosely**: `12.50` finds `12.5`. That's on purpose, so a trailing zero typed in a
+hurry doesn't lose you a cue.
 
 ---
 
@@ -75,39 +78,39 @@ typed under pressure does not lose a cue.
 | **SimpleCue status is live** | Status has arrived recently |
 | **SimpleCue reported an error** | Usually a cue number that does not exist |
 
-**Put "SimpleCue status is live" on any page carrying cue colour.** It is the one that
-distinguishes a current green from a stale one — without it, a surface showing a cue playing may
-be showing what was true before the machine went away.
+**Put "SimpleCue status is live" on any page that shows cue colour.** It's the one that tells a
+current green from a stale one. Without it, a button showing a cue playing might be showing what
+was true before the machine went away.
 
 ---
 
 ## Resync
 
-The module sends a status query every few seconds (configurable; **0** turns it off), which makes
-SimpleCue re-publish its whole state.
+The module sends a status query every few seconds (you can change how often; **0** turns it off),
+and SimpleCue answers by re-publishing its whole state.
 
-**This is what recovers the surface** after either end restarts, or after a lost datagram. Turning
-it off means a single dropped packet can leave a light wrong until the next change.
+**That's what brings the surface back** after either end restarts, or after a lost datagram. Turn
+it off and a single dropped packet can leave a light wrong until something next changes.
 
 ---
 
 ## Master level: relative moves need the status path
 
-**Master level: adjust by** works from the level SimpleCue *last reported*. With no status path
-back to Companion the module has no starting point, so **the action is skipped** rather than
+**Master level: adjust by** works from the level SimpleCue *last reported*. With no status coming
+back to Companion the module has nothing to start from, so **the action is skipped** rather than
 jumping from an assumed 0 dB.
 
-If your relative master buttons do nothing, step 2 of the connection setup was never done.
+If your relative master buttons do nothing, step 2 of the connection setup never got done.
 
 ---
 
 ## Building a surface that fails safe
 
 1. **"SimpleCue status is live"** on every page with cue colour.
-2. **GO and Cue: fire visually distinct.** They are not interchangeable.
-3. **Master-below-threshold** somewhere — a master left pulled down is silent in a way nothing
-   else on the surface reveals.
-4. **Leave the resync running.** It is what makes the page self-heal.
+2. **Make GO and Cue: fire look different.** They aren't interchangeable.
+3. **Master-below-threshold** somewhere. A master left pulled down is silent in a way nothing else
+   on the surface will show you.
+4. **Leave the resync running.** It's what lets the page put itself right.
 
 ---
 
@@ -126,5 +129,5 @@ If your relative master buttons do nothing, step 2 of the connection setup was n
 
 ## See also
 
-- [README](../README.md) — installing, and the full action/feedback/variable list
-- [`companion/HELP.md`](../companion/HELP.md) — the same material, in Companion's help panel
+- [README](../README.md): installing, and the full list of actions, feedbacks and variables
+- [`companion/HELP.md`](../companion/HELP.md): the same material, in Companion's help panel
