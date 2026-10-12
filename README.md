@@ -97,7 +97,10 @@ tell an old green from a current one.
 
 ## Installing
 
-It's not in the official Companion module store, so install it as a developer
+It's not in the official Companion module store. The quick way is to download
+`companion-module-simplecue-pkg.tgz` from the
+[releases page](https://github.com/stoatworks-labs/companion-module-simplecue/releases) and
+import it with Companion's **Modules → Import module package**. Or install it as a developer
 module: point **Settings → Developer modules path** at a folder containing this
 repo, and restart Companion.
 
