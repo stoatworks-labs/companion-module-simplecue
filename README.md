@@ -8,6 +8,8 @@ A [Bitfocus Companion](https://bitfocus.io/companion) module for
 [SimpleCue](https://github.com/stoatworks-labs/simplecue), so you can run the cue
 player from a Stream Deck (or any other Companion surface) over OSC.
 
+The [project page](https://stoatworks-labs.com/software/companion-simplecue/) has the downloads and the [user guide](https://stoatworks-labs.com/software/companion-simplecue/guide/).
+
 It talks straight to SimpleCue's own OSC listener (UDP, port 53000 by default) and
 listens for status coming back on a local port. There's nothing extra to install
 on the SimpleCue end: you turn OSC on and add a target, and that's it.
