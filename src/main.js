@@ -1,4 +1,4 @@
-import { InstanceBase, Regex, InstanceStatus } from "@companion-module/base";
+import { InstanceBase, InstanceStatus } from "@companion-module/base";
 import { UpgradeScripts } from "./upgrades.js";
 import UpdateActions from "./actions.js";
 import UpdateFeedbacks from "./feedbacks.js";
@@ -77,29 +77,37 @@ export default class ModuleInstance extends InstanceBase {
         value:
           "SimpleCue: <b>Audio &rarr; Control setup</b>. Turn OSC on, note its input port, and add an OSC <b>target</b> pointing back at this machine and at the local port below — SimpleCue sends no status at all until a target exists, so feedbacks and variables stay empty without one. That panel's live monitor is the first place to look if a button does nothing.",
       },
+      // Plain text and number fields rather than Regex.HOSTNAME / Regex.PORT,
+      // which base 2.2.2 deprecated. Saved string ports are converted in
+      // upgrades.js.
       {
         type: "textinput",
         id: "remotehost",
         label: "SimpleCue host",
+        tooltip: "IPv4 address or hostname of the SimpleCue machine",
         width: 6,
-        regex: Regex.HOSTNAME,
+        minLength: 1,
         default: "127.0.0.1",
       },
       {
-        type: "textinput",
+        type: "number",
         id: "remoteport",
         label: "SimpleCue OSC input port",
         width: 6,
-        regex: Regex.PORT,
-        default: "53000",
+        min: 1,
+        max: 65535,
+        asInteger: true,
+        default: 53000,
       },
       {
-        type: "textinput",
+        type: "number",
         id: "localport",
         label: "Local status (feedback) port",
         width: 6,
-        regex: Regex.PORT,
-        default: "53001",
+        min: 1,
+        max: 65535,
+        asInteger: true,
+        default: 53001,
       },
       {
         type: "number",

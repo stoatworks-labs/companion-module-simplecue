@@ -64,7 +64,7 @@ Consequences, in the order they bite:
 | `src/feedbacks.js` | Button lighting, including loose cue-number matching                        |
 | `src/variables.js` | Fixed set — everything SimpleCue publishes is known ahead of time           |
 | `src/presets.js`   | Preset sections + definitions (2.x `setPresetDefinitions(structure, defs)`) |
-| `src/upgrades.js`  | Companion config migrations (currently a stub)                              |
+| `src/upgrades.js`  | Companion config migrations (string ports to numbers)                       |
 | `test/smoke.mjs`   | Drives the real source against a fake SimpleCue on a real UDP socket        |
 
 ## 5. Traps already paid for

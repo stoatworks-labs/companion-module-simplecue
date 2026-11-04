@@ -61,8 +61,8 @@ let variableValues = {};
 const self = {
   config: {
     remotehost: "127.0.0.1",
-    remoteport: String(APP_PORT),
-    localport: String(MOD_PORT),
+    remoteport: APP_PORT,
+    localport: MOD_PORT,
     heartbeat: 5,
     defaultstopfade: 2,
   },
@@ -444,6 +444,66 @@ await check(
       read("../package.json").version,
       "bump both, or the release never reaches an existing install",
     );
+  },
+);
+
+// @companion-module/base 2.2.2 turned Regex into a proxy that logs a
+// deprecation warning for IP, HOSTNAME, PORT and the rest. The config now uses
+// plain text and number fields, and an upgrade script turns the ports that
+// older saved configs hold as strings into numbers.
+console.log("\n== config fields ==");
+await check(
+  "config fields: plain host text, number ports, no regex",
+  async () => {
+    const ModuleInstance = (await import(`${MOD}main.js`)).default;
+    const fields = ModuleInstance.prototype.getConfigFields.call({});
+    const byId = Object.fromEntries(fields.map((f) => [f.id, f]));
+    assert.equal(byId.remotehost.type, "textinput");
+    for (const id of ["remoteport", "localport"]) {
+      assert.equal(byId[id].type, "number", `${id} is a number field`);
+      assert.ok(
+        Number.isInteger(byId[id].default),
+        `${id} default is a number`,
+      );
+    }
+    assert.deepEqual(
+      fields.filter((f) => "regex" in f).map((f) => f.id),
+      [],
+    );
+  },
+);
+
+// It matches the import, so comments naming the old constants stay legal.
+await check("no file in src/ imports Regex", async () => {
+  const { readdirSync, readFileSync } = await import("node:fs");
+  const dir = new URL("../src/", import.meta.url).pathname;
+  const offenders = readdirSync(dir).filter(
+    (f) =>
+      /\.(js|ts)$/.test(f) &&
+      /import\s*{[^}]*\bRegex\b[^}]*}\s*from\s*["']@companion-module\/base/.test(
+        readFileSync(dir + f, "utf8"),
+      ),
+  );
+  assert.deepEqual(offenders, [], "use a number or plain textinput field");
+});
+
+await check(
+  "upgrade script turns saved string ports into numbers",
+  async () => {
+    const { portsToNumbers } = await import(`${MOD}upgrades.js`);
+    const run = (config) =>
+      portsToNumbers({}, { config, actions: [], feedbacks: [] }).updatedConfig;
+    assert.deepEqual(
+      run({ remotehost: "10.0.0.5", remoteport: "53000", localport: " 4000 " }),
+      { remotehost: "10.0.0.5", remoteport: 53000, localport: 4000 },
+    );
+    assert.deepEqual(
+      run({ remotehost: "h", remoteport: "", localport: "70000" }),
+      { remotehost: "h", remoteport: 53000, localport: 53001 },
+      "anything that is not a port falls back to the default",
+    );
+    assert.equal(run({ remoteport: 53000, localport: 53001 }), null);
+    assert.equal(run(null), null);
   },
 );
 
